@@ -1,0 +1,4 @@
+.DS_Store
+.idea/
+*/node_modules/*
+basicLearn_imooc/es6/server/node_modules/
