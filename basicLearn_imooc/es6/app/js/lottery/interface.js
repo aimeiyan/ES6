@@ -58,7 +58,7 @@ class Interface{
      * {String} issue [当前期号]
      */
 
-    getStatus(issue){
+    getState(issue){
         let self=this;
         return new Promise((resolve,reject)=>{
             $.ajax({

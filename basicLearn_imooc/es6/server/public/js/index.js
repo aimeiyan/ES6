@@ -13891,6 +13891,11 @@ var _lottery2 = _interopRequireDefault(_lottery);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var syy = new _lottery2.default(); //ES6的兼容处理部分
+
+
+console.log(syy);
+
 /***/ }),
 /* 129 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -19667,8 +19672,8 @@ var Lottery = function (_mix) {
         value: function initEvent() {
             var self = this;
             (0, _jquery2.default)('#plays').on('click', 'li', self.changePlayNav.bind(self));
-            (0, _jquery2.default)('.boll-list').on('click', '.btn-boll', self.toggleCodeActive.bin(self));
-            (0, _jquery2.default)('#confirm_sell_code').on('click', self.addCode.bind(self));
+            (0, _jquery2.default)('.boll-list').on('click', '.btn-boll', self.toggleCodeActive.bind(self));
+            (0, _jquery2.default)('#confirm_sel_code').on('click', self.addCode.bind(self));
             (0, _jquery2.default)(".dxjo").on('click', 'li', self.assistHandle.bind(self));
             (0, _jquery2.default)('.qkmethod').on('click', '.btn-middle', self.getRandomCode.bind(self));
         }
@@ -19940,7 +19945,7 @@ var Base = function () {
             var active = $active ? $active.length : 0;
             var count = self.computeCount(active, self.cur_play);
             if (count) {
-                self.addCodeItem($active.join(''), self.cur_play, self.play_list.get(self.cur_play).name, count);
+                self.addCodeItem($active.join(' '), self.cur_play, self.play_list.get(self.cur_play).name, count);
             }
         }
         /**
@@ -19949,7 +19954,7 @@ var Base = function () {
 
     }, {
         key: 'addCodeItem',
-        value: function addCodeItem() {
+        value: function addCodeItem(code, type, typeName, count) {
             var self = this;
             var tpl = '\n        <li codes="' + type + '|' + code + '" bonus="' + count * 2 + '" count="' + count + '">\n          <div class="code">\n             <b>' + typeName + (count > 1 ? '复式' : '单式') + '</b>\n             <b class="em">' + code + '</b>\n             [' + count + '\u6CE8\uFF0C<em class="code-list-money">' + count * 2 + '</em>\u5143]\n          </div>\n        </li>\n        ';
             (0, _jquery2.default)(self.cart_el).append(tpl);
@@ -19988,7 +19993,7 @@ var Base = function () {
         value: function getTotal() {
             var count = 0;
             (0, _jquery2.default)('.codelist li').each(function (index, item) {
-                count += (0, _jquery2.default)(item).attr(count) * 1;
+                count += (0, _jquery2.default)(item).attr('count') * 1;
             });
             (0, _jquery2.default)("#count").text(count);
             (0, _jquery2.default)("#money").text(count * 2);
@@ -20022,7 +20027,7 @@ var Base = function () {
         key: 'getRandomCode',
         value: function getRandomCode(e) {
             e.preventDefault();
-            var num = e.currentTarget.getAtrribute('count');
+            var num = e.currentTarget.getAttribute('count');
             var play = this.cur_play.match(/\d+/g)[0];
             var self = this;
             if (num === '0') {
@@ -20066,7 +20071,7 @@ var Timer = function () {
                                     var now = new Date().getTime();
                                     var self = this;
 
-                                    if (now - end) {
+                                    if (now - end > 0) {
                                                 handle.call(this);
                                     } else {
                                                 var last_time = end - now;
@@ -20148,7 +20153,7 @@ var Calculate = function () {
             var exist = this.play_list.has(play_name);
             var arr = new Array(active).fill('0');
             if (exist && play_name.at(0) === 'r') {
-                count = Calculate.combine(arr, play_name.split('')[1]);
+                count = Calculate.combine(arr, play_name.split('')[1]).length;
             }
             return count;
         }
@@ -20334,8 +20339,8 @@ var Interface = function () {
          */
 
     }, {
-        key: 'getStatus',
-        value: function getStatus(issue) {
+        key: 'getState',
+        value: function getState(issue) {
             var self = this;
             return new Promise(function (resolve, reject) {
                 _jquery2.default.ajax({
